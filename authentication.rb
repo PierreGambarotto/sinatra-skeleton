@@ -43,7 +43,7 @@ class Authentication < Sinatra::Base
     require 'omniauth-openid'
     require 'openid/store/filesystem'
     # fournisseur openid de Google, route : /auth/google
-    use OmniAuth::Strategies::OpenID, :store => OpenID::Store::Filesystem.new('/tmp'), :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
+    use OmniAuth::Strategies::OpenID, :store => OpenID::Store::Filesystem.new('./tmp'), :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
     set :auth_provider, "google"
   end
 

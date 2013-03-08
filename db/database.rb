@@ -12,6 +12,7 @@ if environment == 'production' && ENV['DATABASE_URL']
   configuration = {
     :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
     :host     => db.host,
+    :port     => db.port,
     :username => db.user,
     :password => db.password,
     :database => db.path[1..-1],
