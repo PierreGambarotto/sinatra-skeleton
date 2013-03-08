@@ -13,6 +13,16 @@ Bootstrap](http://twitter.github.com/bootstrap/)
 * `db` : tout ce qui concerne la base de données (configuration, migrations)
 * `app.rb` : le fichier de lancement de l'application.
 * `demo.rb` : application de démonstration
+* `Gemfile` : spécification des librairies utilisées
+
+## Lancement de l'application de démo
+
+```bash
+
+sudo apt-get install libpq-dev # pour la gem pq
+bundle install # installation des gems
+ruby demo.rb # lance l'application sur http://localhost:4567
+```
 
 ## Gestion de l'authentification
 
