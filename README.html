@@ -1,0 +1,235 @@
+<style>.hll { background-color: #ffffcc }
+.c { color: #408080; font-style: italic } /* Comment */
+.err { border: 1px solid #FF0000 } /* Error */
+.k { color: #008000; font-weight: bold } /* Keyword */
+.o { color: #666666 } /* Operator */
+.cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.cp { color: #BC7A00 } /* Comment.Preproc */
+.c1 { color: #408080; font-style: italic } /* Comment.Single */
+.cs { color: #408080; font-style: italic } /* Comment.Special */
+.gd { color: #A00000 } /* Generic.Deleted */
+.ge { font-style: italic } /* Generic.Emph */
+.gr { color: #FF0000 } /* Generic.Error */
+.gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.gi { color: #00A000 } /* Generic.Inserted */
+.go { color: #888888 } /* Generic.Output */
+.gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.gs { font-weight: bold } /* Generic.Strong */
+.gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.gt { color: #0044DD } /* Generic.Traceback */
+.kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.kp { color: #008000 } /* Keyword.Pseudo */
+.kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.kt { color: #B00040 } /* Keyword.Type */
+.m { color: #666666 } /* Literal.Number */
+.s { color: #BA2121 } /* Literal.String */
+.na { color: #7D9029 } /* Name.Attribute */
+.nb { color: #008000 } /* Name.Builtin */
+.nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.no { color: #880000 } /* Name.Constant */
+.nd { color: #AA22FF } /* Name.Decorator */
+.ni { color: #999999; font-weight: bold } /* Name.Entity */
+.ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.nf { color: #0000FF } /* Name.Function */
+.nl { color: #A0A000 } /* Name.Label */
+.nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.nt { color: #008000; font-weight: bold } /* Name.Tag */
+.nv { color: #19177C } /* Name.Variable */
+.ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.w { color: #bbbbbb } /* Text.Whitespace */
+.mf { color: #666666 } /* Literal.Number.Float */
+.mh { color: #666666 } /* Literal.Number.Hex */
+.mi { color: #666666 } /* Literal.Number.Integer */
+.mo { color: #666666 } /* Literal.Number.Oct */
+.sb { color: #BA2121 } /* Literal.String.Backtick */
+.sc { color: #BA2121 } /* Literal.String.Char */
+.sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.s2 { color: #BA2121 } /* Literal.String.Double */
+.se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.sh { color: #BA2121 } /* Literal.String.Heredoc */
+.si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.sx { color: #008000 } /* Literal.String.Other */
+.sr { color: #BB6688 } /* Literal.String.Regex */
+.s1 { color: #BA2121 } /* Literal.String.Single */
+.ss { color: #19177C } /* Literal.String.Symbol */
+.bp { color: #008000 } /* Name.Builtin.Pseudo */
+.vc { color: #19177C } /* Name.Variable.Class */
+.vg { color: #19177C } /* Name.Variable.Global */
+.vi { color: #19177C } /* Name.Variable.Instance */
+.il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<h1>Squelette pour application Sinatra/ActiveRecord</h1>
+
+<h2>Arborescence des fichiers:</h2>
+
+<ul>
+<li><code>lib/models</code> : la partie métier de votre application</li>
+<li><code>examples</code> : des exemples listés dans cette documentation</li>
+<li><code>spec</code> : spécifications rspec de votre application</li>
+<li><code>db</code> : tout ce qui concerne la base de données (configuration, migrations)</li>
+<li><code>app.rb</code> : le fichier de lancement de l&#39;application.</li>
+</ul>
+
+<h2>Gestion de l&#39;authentification</h2>
+
+<p>Nous allons considérer 2 types d&#39;authentifications possibles:</p>
+
+<ul>
+<li>authentification pour API Rest</li>
+<li>authentification pour interface web</li>
+</ul>
+
+<h3>Authentification pour API Rest</h3>
+
+<p>Une API Rest doit être sans état, ce qui implique de ne pas gérer de session. Le
+client doit donc soumettre ses identifiants à chaque connexion.</p>
+
+<p>Pour authentifier les appels par API, nous allons utiliser l&#39;authentification
+<a href="http://fr.wikipedia.org/wiki/HTTP_Authentification#M.C3.A9thode_Basic">HTTP
+Basic</a>
+qui utilise l&#39;entête <code>Authorization</code>.</p>
+
+<p>Vous trouverez un exemple de code dans
+<a href="examples/http_basic.rb"><code>examples/http_basic.rb</code></a>.</p>
+
+<h3>Authentification pour l&#39;interface web</h3>
+
+<p>Pour gérer l&#39;authentification, nous allons utiliser un service externe. Le
+middleware Rack <a href="https://github.com/intridea/omniauth"><code>omniauth</code></a> permet de manière
+souple l&#39;utilisation de plusieurs sources d&#39;authentification.</p>
+
+<p>Il faut d&#39;abord configurer <code>omniauth</code> en installant et configurant les
+librairies spécifiques aux fournisseurs d&#39;authentification (twitter, facebook,
+google …).</p>
+
+<p>Quel que soit le fournisseur d&#39;authentification, l&#39;utilisation est :</p>
+
+<ol>
+<li><code>GET &#39;/auth/:provider&#39;</code>
+Le navigateur de l&#39;utilisateur  est redirigé vers le service d&#39;authentification
+designé par <code>:provider</code>, qui se charge d&#39;authentifier l&#39;utilisateur.</li>
+<li>Le service redirige ensuite le navigateur vers <code>/auth/:provider/callback</code>. La
+libraire omniauth remplit <code>request.env[&#39;omniauth.auth&#39;]</code> avec des
+informations représentant l&#39;utilisateur, telle que l&#39;email, le nom, et
+d&#39;autres informations que vous trouverez dans la <a href="https://github.com/intridea/omniauth/wiki/Auth-Hash-Schema">spécification du hash
+renvoyé par
+omniauth</a>. En cas d&#39;échec de
+l&#39;authentification, le service redirige le navigateur vers <code>auth/failure</code>.</li>
+<li>À vous de jouer pour faire quelque chose de ces informations, par exemple: 
+
+<ul>
+<li>créer un utilisateur dans une base de données </li>
+<li>positionner dans la session une variable pour se souvenir que l&#39;utilisateur
+s&#39;est authentifié</li>
+</ul></li>
+</ol>
+
+<p>Vous trouverez un exemple d&#39;utilisation dans <code>authentication.rb</code>.</p>
+
+<h3>Distinguer les appels vers l&#39;API Rest des appels vers l&#39;interface web</h3>
+
+<p>Si l&#39;entête <code>Accept</code> ne suffit pas pour distinguer les cas d&#39;appels, il est
+possible de regarder si l&#39;authentification pour l&#39;API Rest est utilisée.</p>
+
+<h2>Providers configurés dans <code>authentication.rb</code></h2>
+
+<p>omniauth http
+developer</p>
+
+<p>omniauth en mode developpement/test</p>
+<div class="highlight"><pre><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">intridea</span><span class="o">/</span><span class="n">omniauth</span><span class="o">/</span><span class="n">blob</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">omniauth</span><span class="o">/</span><span class="n">strategies</span><span class="o">/</span><span class="n">developer</span><span class="p">.</span><span class="n">rb</span>
+</pre></div>
+<p>en mode production : enregistrement de l&#39;appli auprès de auth.enseeiht.fr</p>
+
+<p>Regarder du côté de sintra-contrib : http://www.sinatrarb.com/contrib/
+en particulier : </p>
+
+<ul>
+<li><a href="http://www.sinatrarb.com/contrib/json.html">Sinatra::Json</a></li>
+<li><a href="http://www.sinatrarb.com/contrib/respond_with.html">Sinatra::RespondWith</a></li>
+<li><a href="http://www.sinatrarb.com/contrib/reloader">Sinatra::Reloader</a></li>
+</ul>
+
+<p>Prérequis :</p>
+<div class="highlight"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libpq</span><span class="o">-</span><span class="n">dev</span> # <span class="n">postgresql</span> <span class="n">development</span> <span class="n">files</span> <span class="k">for</span> <span class="n">gem</span> <span class="n">pg</span>
+</pre></div>
+<h2>Code source comportant de l&#39;UTF-8, mettre en début de fichier</h2>
+<div class="highlight"><pre><span class="c"># encoding: utf-8</span>
+</pre></div>
+<p>Notez que la version 2.0 de ruby en fait un réglage par défaut.</p>
+
+<h2>Environnements</h2>
+
+<p>Test, développement, production</p>
+
+<h3>Test :</h3>
+
+<ul>
+<li>base de données : <code>db/test.sqlite3</code></li>
+</ul>
+
+<p><code>spec/spec_helper.rb</code> configure Rspec pour remettre la base de données à l&#39;état
+initial après chaque test. De cette manière, les tests restent indépendants.</p>
+
+<h3>Development</h3>
+
+<ul>
+<li>base de données : <code>db/development.sqlite3</code></li>
+</ul>
+
+<p>On utilise <code>Sinatra::Reloader</code> pour recharger automatiquement l&#39;application
+à chaque requête, cela évite de redémarrer le serveur à chaque changement.</p>
+
+<h3>Production</h3>
+
+<ul>
+<li>base de données Postgresql, gérée par Heroku.
+Heroku fournit les caractéristiques de la base de données dans la varialbe
+d&#39;environnement <code>DATABASE_URL</code>. </li>
+</ul>
+
+<h3>Positionner l&#39;environnement courant</h3>
+<div class="highlight"><pre><span class="n">export</span> <span class="n">RACK_ENV</span> <span class="p">=</span> <span class="n">test</span> <span class="o">|</span> <span class="n">production</span> <span class="o">|</span> <span class="n">development</span>
+</pre></div>
+<p>L&#39;environnement par défaut est <code>development</code>.</p>
+
+<h2>Migration</h2>
+
+<p><code>rake -T db</code> va vous lister les tâches disponibles pour gérer vos bases de
+données.</p>
+
+<p>Les tâches s&#39;appliquent dans l&#39;environnement courant, ou <code>development</code> par
+défaut.</p>
+
+<h2>générer une migration</h2>
+<div class="highlight"><pre><span class="n">rake</span> <span class="n">db</span><span class="p">:</span><span class="n">new_migration</span> <span class="n">name</span><span class="p">=</span><span class="n">do_this</span>
+</pre></div>
+<p>Cette commande génère le fichier <code>db/migrate/YYYMMDDHHMMSS_do_this.rb</code> dans le
+répertoire <code>db/migrate</code>
+(<code>YYYMMDDHHMMSS</code> : date au format année mois jour heure minute seconde).</p>
+
+<h2>appliquer les migrations</h2>
+<div class="highlight"><pre><span class="n">rake</span> <span class="n">db</span><span class="p">:</span><span class="n">migrate</span>
+</pre></div>
+<h2>Simuler une requête PUT/DELETE à partir d&#39;un navigateur</h2>
+
+<p>Le principe est de faire générer au navigateur une requête POST avec un
+paramètre indiquant le type de requête HTTP souhaitée.</p>
+<div class="highlight"><pre><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;…&quot;</span> <span class="na">method=</span><span class="s">&quot;POST&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;hidden&quot;</span> <span class="na">name=</span><span class="s">&quot;_method&quot;</span> <span class="na">value=</span><span class="s">&quot;PUT/DELETE&quot;</span><span class="nt">/&gt;</span>
+  …
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">name=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;ok&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</pre></div>
+<p>Le middleware
+<a href="http://rack.rubyforge.org/doc/classes/Rack/MethodOverride.html"><code>Rack::MethodOverride</code></a>
+implémente le changement de requête: si une requête de type POST est reçue avec
+le paramètre <code>_method</code>, alors le type de requête est changé pour la valeur du
+paramètre <code>_method</code>.</p>
+
+<p>Pour utiliser ce middelware, il faut dans Sinatra faire :</p>
+<div class="highlight"><pre><span class="n">enable</span> <span class="o">:</span><span class="n">method_override</span> <span class="err">#</span> <span class="n">activ</span><span class="err">é</span> <span class="n">par</span> <span class="n">d</span><span class="err">é</span><span class="n">faut</span>
+</pre></div>
+<p>Vous trouverez un exemple démontrant ce mécanisme dans
+<code>examples/method_override.rb</code></p>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<title>Application Demo</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js
+      
+      "></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css">
+  </head>
+  <body >
+
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="navbar-inner">
+        <div class="container">
+
+            <a class="brand" href="#">
+              Démo
+            </a>
+
+            <ul class="nav">
+              <li><a href="/">Home</a></li>
+            </ul>
+
+            <ul class="nav pull-right">
+               <% if login = current_user %>
+                 <li><a href="#" class="brand"><%= login %></a></li>
+                 <li><a href="/logout">Logout</a></li>
+               <% else %>
+                 <li><a href="/login">Login</a></li>
+               <% end %>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+
+	<div class="container">
+    	<%= yield %>
+	</div>
+  <div class="container"><%if @debug then %>
+    <div class="alert alert-info"><%=@debug%></div>
+  <% end %>
+</div>  </body>
+</html>
