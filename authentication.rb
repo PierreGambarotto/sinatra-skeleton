@@ -72,7 +72,7 @@ class Authentication < Sinatra::Base
   end
 
   route :get, :post, '/auth/:provider/callback' do
-    auth = REQUEst.env['omniauth.auth'] # hash given by the authentication provider
+    auth = request.env['omniauth.auth'] # hash given by the authentication provider
     session['current_user'] = auth.uid
     @debug = "Connexion réussie. <br/>Information collectées par le fournisseur d'authentification : #{auth.to_hash}"
     initial_request = session['initial_request_path']
