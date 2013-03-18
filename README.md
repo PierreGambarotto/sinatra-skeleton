@@ -165,4 +165,43 @@ Pour utiliser ce middelware, il faut dans Sinatra faire :
 Vous trouverez un exemple démontrant ce mécanisme dans
 `examples/method_override.rb`
 
+## Déploiement sur Heroku
 
+Heroku est une solution de PaaS.
+
+1. Installation des [outils heroku](https://toolbelt.heroku.com/)
+
+    wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+
+2. Se créer un compte sur [heroku.com](http://heroku.com) et s'authentifier localement.
+
+    heroku login
+    Enter your heroku credentials
+    Email: bob@eponge.com
+    Password:
+    Could not find an existing public key.
+    Would you like to generate one? [Yn]
+    Generating new SSH public key.
+    Uploading ssh public key /Users/adam/.ssh/id_rsa.pub
+
+3. Créer chez Heroku une plateforme de déploiment :
+
+    cd sinatra-skeleton
+    heroku create
+
+4. Déployer le code :
+
+    git push heroku master
+
+5. Exécuter les migrations
+
+    heroku run db:migrate
+
+La base de données est indiquée dans l'environnement d'excution dans la plateforme fournie.
+
+    heroku run bash # ouvre un shell sur la plateforme distante
+    env # regarder 
+
+6. Voir le résultat
+
+    heroku open
