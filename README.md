@@ -169,11 +169,13 @@ Vous trouverez un exemple démontrant ce mécanisme dans
 
 Heroku est une solution de PaaS.
 
-1. Installation des [outils heroku](https://toolbelt.heroku.com/)
+### Installation des [outils heroku](https://toolbelt.heroku.com/)
 
-    wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+```
+wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+```
 
-2. Se créer un compte sur [heroku.com](http://heroku.com) et s'authentifier localement.
+### Se créer un compte sur [heroku.com](http://heroku.com) et s'authentifier localement.
 
 ```
 heroku login
@@ -186,20 +188,20 @@ Generating new SSH public key.
 Uploading ssh public key /Users/adam/.ssh/id_rsa.pub
 ```
 
-3. Créer chez Heroku une plateforme de déploiment :
+### Créer chez Heroku une plateforme de déploiment :
 
 ```
 cd sinatra-skeleton
 heroku create
 ```
 
-4. Déployer le code :
+### Déployer le code :
 
 ```
 git push heroku master
 ```
 
-5. Exécuter les migrations
+### Exécuter les migrations
 
 ```
 heroku run db:migrate
@@ -212,7 +214,7 @@ heroku run bash # ouvre un shell sur la plateforme distante
 env # regarder 
 ```
 
-6. Voir le résultat
+### Voir le résultat
 
 ```
 heroku open
