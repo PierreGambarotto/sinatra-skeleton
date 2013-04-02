@@ -4,7 +4,6 @@ require 'sinatra/reloader'
 require 'sinatra/respond_with'
 require 'sinatra/json'
 require_relative './authentication'
-
 use Authentication
 helpers AuthenticationHelpers
 
