@@ -91,6 +91,12 @@ la présence de l'entête `Authorization`.
 
 Dans votre code, `request.xhr?` vaudra `true` si l'entête est positionné.
 
+### Authentification et test
+
+Pour séparer les cas authentifié/non authentifié dans les spécifications avec
+`rspec`, on utilise un stub sur la méthode `current_user`.
+Vous trouverez un exemple dans `spec/app_spec.rb`.
+
 ## Code source comportant de l'UTF-8, mettre en début de fichier
 
     # encoding: utf-8
